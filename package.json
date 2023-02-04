@@ -1,24 +1,25 @@
 {
-  "name": "github_actions_otel_trace",
-  "version": "0.1.0",
+  "name": "root",
+  "version": "0.0.0",
+  "private": "true",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
   "author": "kesin1202000@gmail.com",
   "license": "MIT",
-  "dependencies": {
-    "@octokit/rest": "^19.0.5",
-    "@opentelemetry/api": "^1.3.0",
-    "@opentelemetry/exporter-trace-otlp-http": "^0.35.1",
-    "@opentelemetry/resources": "^1.8.0",
-    "@opentelemetry/sdk-node": "^0.34.0",
-    "@opentelemetry/sdk-trace-base": "^1.8.0",
-    "@opentelemetry/semantic-conventions": "^1.8.0"
+  "engines": {
+    "node": ">=v18.0.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "reference": "workspaces-to-typescript-project-references",
+    "clean": "tsc -b --clean && rm -rf dist_app",
+    "build": "tsc -b",
+    "build:clean": "npm run clean && npm run build",
+    "test": "npm run test -ws"
   },
   "devDependencies": {
-    "typescript": "^4.9.4"
+    "@monorepo-utils/workspaces-to-typescript-project-references": "^2.9.0",
+    "typescript": "4.9.4"
   }
 }
