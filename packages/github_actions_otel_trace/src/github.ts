@@ -1,23 +1,29 @@
-import { Octokit } from "@octokit/rest";
+import { Octokit, RestEndpointMethodTypes } from "@octokit/rest"
 
-const octokit = new Octokit({
-  auth: process.env.GITHUB_TOKEN
-})
+export type WorkflowRun = RestEndpointMethodTypes["actions"]["getWorkflowRun"]["response"]["data"]
+export type WorkflowJobs = RestEndpointMethodTypes["actions"]["listJobsForWorkflowRun"]["response"]["data"]["jobs"]
 
-export async function fetchWorkflowRun(owner: string, repo: string, runId: number) {
-  const workflowRun = await octokit.actions.getWorkflowRun({
-    owner,
-    repo,
-    run_id: runId
-  })
-  return workflowRun.data
-}
+export class GithubClient {
+  private octokit: Octokit
+  constructor(token: string) {
+    this.octokit = new Octokit({ auth: token })
+  }
 
-export async function fetchWorkflowJobs(owner: string, repo: string, runId: number) {
-  const jobs = await octokit.actions.listJobsForWorkflowRun({
-    owner,
-    repo,
-    run_id: runId
-  })
-  return jobs.data.jobs
+  async fetchWorkflowRun(owner: string, repo: string, runId: number): Promise<WorkflowRun> {
+    const workflowRun = await this.octokit.actions.getWorkflowRun({
+      owner,
+      repo,
+      run_id: runId
+    })
+    return workflowRun.data
+  }
+
+  async fetchWorkflowJobs(owner: string, repo: string, runId: number): Promise<WorkflowJobs> {
+    const jobs = await this.octokit.actions.listJobsForWorkflowRun({
+      owner,
+      repo,
+      run_id: runId
+    })
+    return jobs.data.jobs
+  }
 }
