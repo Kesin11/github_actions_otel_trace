@@ -69,8 +69,6 @@ export class GithubActionsTracer {
   async addJobSpans(workflowJobs: WorkflowJobs) {
     if (this.tracer === undefined) throw new Error(`tracer is undefined!`)
     if (this.workflowRunSpan === undefined) throw new Error(`workflowRunSpan is undefined!`)
-    // TODO: Add queue span to each job
-
     for (const job of workflowJobs) {
       const jobSpan = this.tracer.startSpan(
         job.name,
