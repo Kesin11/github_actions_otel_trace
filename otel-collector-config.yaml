@@ -13,14 +13,23 @@ exporters:
     sampling_initial: 5
     sampling_thereafter: 200
   # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/googlecloudexporter
-  googlecloud:
-    retry_on_failure:
-      enabled: false
-    trace:
+
+  # For local debug
+  # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/jaegerexporter
+  jaeger:
+    endpoint: jaegertracing:14250
+    tls:
+      insecure: true
+  # googlecloud:
+  #   project: common-dev-242504
+  #   retry_on_failure:
+  #     enabled: false
+  #   trace:
 
 service:
   pipelines:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, googlecloud]
+      exporters: [logging, jaeger]
+      # exporters: [logging, googlecloud]
