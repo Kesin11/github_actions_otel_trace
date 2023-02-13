@@ -12,6 +12,13 @@ services:
       # - "8888:8888"   # Prometheus metrics exposed by the collector
       # - "8889:8889"   # Prometheus exporter metrics
       # - "13133:13133" # health_check extension
-      - "127.0.0.1:4317:4317"   # OTLP gRPC receiver
+      # - "127.0.0.1:4317:4317"   # OTLP gRPC receiver
       - "127.0.0.1:4318:4318"   # OTLP http receiver
       # - "55679:55679" # zpages extension
+  jaeger:
+    container_name: jaegertracing
+    image: jaegertracing/all-in-one:latest
+    ports:
+      # https://www.jaegertracing.io/docs/latest/getting-started/
+      - 127.0.0.1:16686:16686 # frontend
+      - 127.0.0.1:14250:14250 # accept model.proto
