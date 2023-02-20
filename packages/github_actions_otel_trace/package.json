@@ -20,6 +20,11 @@
   "engines": {
     "node": ">=v18.0.0"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "clean": "tsc -b --clean",
     "build": "tsc -b",
