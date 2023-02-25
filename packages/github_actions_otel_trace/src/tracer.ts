@@ -52,10 +52,11 @@ export class GithubActionsTracer {
     if (this.tracer === undefined) throw new Error(`tracer is undefined!`)
 
     const runSpan = this.tracer.startSpan(
-      workflowRun.name ?? String(workflowRun.workflow_id),
+      `${workflowRun.repository.full_name}:${workflowRun.name ?? workflowRun.workflow_id}`,
       {
         startTime: new Date(workflowRun.created_at),
         attributes: {
+          'github.run.full_name': workflowRun.repository.full_name,
           'github.run.workflow_name': workflowRun.name ?? '',
           'github.run.workflow_id': workflowRun.workflow_id,
           'github.run.html_url': workflowRun.html_url,
