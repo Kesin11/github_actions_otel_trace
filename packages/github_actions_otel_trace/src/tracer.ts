@@ -3,6 +3,7 @@ import { Resource } from '@opentelemetry/resources'
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions'
 import { diag, DiagConsoleLogger, DiagLogLevel, trace, context, SpanStatusCode, Tracer, Span } from '@opentelemetry/api';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
+import { OTLPExporterNodeConfigBase } from '@opentelemetry/otlp-exporter-base';
 import { WorkflowJobs, WorkflowRun } from './github';
 
 export class GithubActionsTracer {
@@ -10,36 +11,40 @@ export class GithubActionsTracer {
   exporter?: OTLPTraceExporter
   tracer?: Tracer
   workflowRunSpan?: Span
-  constructor(options: {
-    debug?: boolean,
+  constructor(args: {
     serviceName: string,
-    otlpEndpoint?: string
+    debug?: boolean,
+    otlpEndpoint?: string,
+    otlpExporterNodeConfig?: OTLPExporterNodeConfigBase,
   }) {
-    this.debug = options.debug ?? false
+    this.debug = args.debug ?? false
     if (this.debug) {
       diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
     }
 
-    this.setupTracer(options.serviceName, this.debug, options.otlpEndpoint)
+    this.setupTracer(args.serviceName, { otlpEndpoint: args.otlpEndpoint, otlpExporterNodeConfig: args.otlpExporterNodeConfig })
   }
 
-  // TODO: providerの作り方あたりをこれの実装と比べてみる https://github.com/inception-health/otel-export-trace-action
-
-  setupTracer(serviceName: string, debug: boolean, otlpEndpoint?: string) {
-    const url = otlpEndpoint ?? "http://localhost:4318/v1/traces"
+  setupTracer(serviceName: string, options?: { otlpEndpoint?: string, otlpExporterNodeConfig?: OTLPExporterNodeConfigBase }) {
     const provider = new BasicTracerProvider({
       resource: new Resource({
         [SemanticResourceAttributes.SERVICE_NAME]: serviceName,
       }),
     });
 
-    this.exporter = new OTLPTraceExporter({
-      url, // url is optional and can be omitted - default is http://localhost:4318/v1/traces
-      headers: {}, // an optional object containing custom headers to be sent with each request will only work with http
-      // concurrencyLimit: 10, // an optional limit on pending requests
-    })
+    switch (options) {
+      case options?.otlpEndpoint:
+        this.exporter = new OTLPTraceExporter({ url: options?.otlpEndpoint })
+        break
+      case options?.otlpExporterNodeConfig:
+        this.exporter = new OTLPTraceExporter({ ...options?.otlpExporterNodeConfig })
+        break
+      default:
+        this.exporter = new OTLPTraceExporter()
+        break
+    }
 
-    if (debug) provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
+    if (this.debug) provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
     provider.addSpanProcessor(new SimpleSpanProcessor(this.exporter))
     this.tracer = provider.getTracer(serviceName)
   }
