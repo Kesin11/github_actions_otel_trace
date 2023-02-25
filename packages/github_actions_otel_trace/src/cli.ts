@@ -16,7 +16,7 @@ const main = async () => {
 
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN
   if (!GITHUB_TOKEN) throw new Error("GITHUB_TOKEN is undefined!")
-  const githubClient = new GithubClient(GITHUB_TOKEN)
+  const githubClient = new GithubClient({ token: GITHUB_TOKEN })
   const githubActionsTracer = new GithubActionsTracer({
     serviceName: 'github_actions',
     otlpEndpoint: "http://localhost:4318/v1/traces",
