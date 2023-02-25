@@ -23,8 +23,12 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist/"
+    "dist/",
+    "LICENSE"
   ],
+  "bin": {
+    "gha_otel_trace": "dist/cli.js"
+  },
   "scripts": {
     "clean": "tsc -b --clean",
     "build": "tsc -b",
