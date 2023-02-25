@@ -20,8 +20,8 @@ const app: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     // Skip if not a workflow_run event and completed action
     if (request.headers['X-GitHub-Event'] !== "workflow_run" && payload.action !== "completed" ) return reply.code(200).send("Not a workflow_run event or not completed action")
 
-    const GITHUB_TOKEN = process.env.GITHUB_TOKEN
-    if (!GITHUB_TOKEN) throw new Error("GITHUB_TOKEN is undefined!")
+    const GITHUB_TOKEN = process.env.GITHUB_PAT ?? process.env.GITHUB_TOKEN
+    if (!GITHUB_TOKEN) throw new Error("GITHUB_PAT or GITHUB_TOKEN is undefined!")
     const githubClient = new GithubClient(GITHUB_TOKEN)
     const githubActionsTracer = new GithubActionsTracer({
       serviceName: 'github_actions',
