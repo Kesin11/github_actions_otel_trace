@@ -23,6 +23,8 @@ export class GithubActionsTracer {
     this.setupTracer(options.serviceName, this.debug, options.otlpEndpoint)
   }
 
+  // TODO: providerの作り方あたりをこれの実装と比べてみる https://github.com/inception-health/otel-export-trace-action
+
   setupTracer(serviceName: string, debug: boolean, otlpEndpoint?: string) {
     const url = otlpEndpoint ?? "http://localhost:4318/v1/traces"
     const provider = new BasicTracerProvider({
@@ -49,11 +51,23 @@ export class GithubActionsTracer {
   startWorkflowSpan(workflowRun: WorkflowRun) {
     if (this.tracer === undefined) throw new Error(`tracer is undefined!`)
 
-    const runSpan = this.tracer.startSpan(workflowRun.name!, { startTime: new Date(workflowRun.created_at )})
-    runSpan.setAttributes({
-      'run.status': workflowRun.status ?? '',
-      'run.conclusion': workflowRun.conclusion ?? ''
-    })
+    const runSpan = this.tracer.startSpan(
+      workflowRun.name ?? String(workflowRun.workflow_id),
+      {
+        startTime: new Date(workflowRun.created_at),
+        attributes: {
+          'github.run.workflow_name': workflowRun.name ?? '',
+          'github.run.workflow_id': workflowRun.workflow_id,
+          'github.run.html_url': workflowRun.html_url,
+          'github.run.run_id': workflowRun.id,
+          'github.run.number': workflowRun.run_number,
+          'github.run.event': workflowRun.event,
+          'github.run.status': workflowRun.status ?? '',
+          'guthub.run.conclusion': workflowRun.conclusion ?? ''
+        },
+        root: true,
+      }
+    )
     runSpan.setStatus(
       (workflowRun.conclusion !== 'success')
       ? { code: SpanStatusCode.ERROR }
@@ -72,15 +86,18 @@ export class GithubActionsTracer {
     for (const job of workflowJobs) {
       const jobSpan = this.tracer.startSpan(
         job.name,
-        { startTime: new Date(job.started_at) },
+        {
+          startTime: new Date(job.started_at),
+          attributes: {
+            'github.job.name': job.name,
+            'github.job.id': job.id,
+            'github.job.run_id': job.run_id,
+            'github.job.status': job.status ?? '',
+            'github.job.conclusion': job.conclusion ?? ''
+          }
+        },
         trace.setSpan(context.active(), this.workflowRunSpan)
       )
-      jobSpan.setAttributes({
-        'job.name': job.name,
-        'job.id': job.id,
-        'job.status': job.status ?? '',
-        'job.conclusion': job.conclusion ?? ''
-      })
       jobSpan.setStatus(
         (job.conclusion !== 'success')
         ? { code: SpanStatusCode.ERROR }
@@ -91,15 +108,17 @@ export class GithubActionsTracer {
       for (const step of job.steps!) {
         const stepSpan = this.tracer.startSpan(
           step.name,
-          { startTime: new Date(step.started_at!) },
+          {
+            startTime: new Date(step.started_at!),
+            attributes: {
+              'github.step.name': step.name,
+              'github.step.number': step.number,
+              'github.step.status': step.status ?? '',
+              'github.step.conclusion': step.conclusion ?? ''
+            }
+          },
           trace.setSpan(context.active(), jobSpan)
         )
-        stepSpan.setAttributes({
-          'step.name': step.name,
-          'step.id': step.number,
-          'step.status': job.status ?? '',
-          'conclusion': job.conclusion ?? ''
-        })
         stepSpan.setStatus(
           (step.conclusion !== 'success')
           ? { code: SpanStatusCode.ERROR }
