@@ -1,0 +1,24 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "author": "kesin1202000@gmail.com",
+  "license": "MIT",
+  "main": "dist/app.js",
+  "scripts": {
+    "build": "tsc -b",
+    "build:watch": "tsc -b -w",
+    "start": "fastify start -l info -p 3000 -a 0.0.0.0 dist/app.js",
+    "dev": "npm run build:watch & fastify start -w --ignore-watch=.ts$ -l debug -P dist/app.js"
+  },
+  "dependencies": {
+    "@Kesin11/github_actions_otel_trace": "*",
+    "@octokit/rest": "^19.0.7",
+    "@octokit/webhooks-methods": "^3.0.2",
+    "fastify": "^4.0.0",
+    "fastify-cli": "^5.7.1"
+  },
+  "devDependencies": {
+    "@octokit/webhooks-types": "^6.10.0"
+  }
+}
