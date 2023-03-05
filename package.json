@@ -13,6 +13,7 @@
   ],
   "scripts": {
     "reference": "workspaces-to-typescript-project-references",
+    "start": "npm run -w server start",
     "clean": "npm run clean -ws --if-present",
     "build": "npm run build -ws --if-presene",
     "build:clean": "npm run build:clean -ws --ifpresent",
