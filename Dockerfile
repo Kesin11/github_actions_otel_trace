@@ -16,6 +16,10 @@ RUN tar -xvf otelcol-contrib_0.70.0_linux_amd64.tar.gz
 FROM node:18-slim as prod
 WORKDIR /app
 
+RUN apt-get update \
+    && apt-get install -y ca-certificates \
+    && apt-get clean
+
 COPY --link package.json package-lock.json ./
 COPY --link --from=node-builder /builder/packages/ ./packages
 RUN npm ci --omit=dev && rm -rf ~/.npm
