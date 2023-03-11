@@ -7,17 +7,10 @@ services:
         tags:
           - github_actions_otel_trace
     volumes:
-      # - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+      - ./otel-collector-config-gcloud.yaml:/app/otel-collector-config.yaml
       - ~/.config/gcloud/application_default_credentials.json:/etc/otel/key.json:ro
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/etc/otel/key.json
+      - GITHUB_PAT=${GITHUB_PAT}
     ports:
       - "3000:3000" # ./packages/server
-
-      # - "1888:1888"   # pprof extension
-      # - "8888:8888"   # Prometheus metrics exposed by the collector
-      # - "8889:8889"   # Prometheus exporter metrics
-      # - "13133:13133" # health_check extension
-      # - "127.0.0.1:4317:4317"   # OTLP gRPC receiver
-      - "4318:4318"   # OTLP http receiver
-      # - "55679:55679" # zpages extension
