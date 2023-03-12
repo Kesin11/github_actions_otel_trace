@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-./otelcol-contrib --config ./otel-collector-config.yaml & npm run start
+COLLECTOR_CONFIG_YAML=${COLLECTOR_CONFIG_YAML:-./otel-collector-config.yaml}
+echo $COLLECTOR_CONFIG_YAML
+
+./otelcol-contrib --config "${COLLECTOR_CONFIG_YAML}" & npm run start
