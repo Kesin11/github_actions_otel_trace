@@ -12,7 +12,6 @@ exporters:
     verbosity: detailed
     sampling_initial: 5
     sampling_thereafter: 200
-  # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/googlecloudexporter
 
   googlecloud:
     # `project`: default = Fetch from Credentials
