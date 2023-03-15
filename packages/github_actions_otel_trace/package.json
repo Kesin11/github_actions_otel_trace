@@ -38,7 +38,8 @@
     "clean": "tsc -b --clean",
     "build": "tsc -b",
     "build:clean": "npm run clean && npm run build",
-    "test": "npm run test"
+    "test": "npm run test",
+    "prerelease": "npm run build:clean && npm publish prerelease"
   },
   "dependencies": {
     "@octokit/plugin-retry": "4.1.1",

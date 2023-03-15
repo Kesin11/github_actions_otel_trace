@@ -35,3 +35,9 @@ ts-node src/cli.ts \
   --otlpEndpoint http://localhost:4318/v1/trace \
   --debug
 ```
+
+or use npx
+
+```bash
+npx @kesin11/github_actions_otel_trace
+```
