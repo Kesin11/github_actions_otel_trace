@@ -1,5 +1,5 @@
-# @Kesin11/github_actions_otel_trace
-Send GitHub Actions workflow data to OpenTelemetry.
+# @kesin11/github_actions_otel_trace
+Export GitHub Actions workflow data to OpenTelemetry.
 
 # USAGE
 

@@ -12,7 +12,7 @@
     "dev": "npm run build:watch & fastify start -w --ignore-watch=.ts$ -l debug -P dist/app.js"
   },
   "dependencies": {
-    "@Kesin11/github_actions_otel_trace": "*",
+    "@kesin11/github_actions_otel_trace": "*",
     "@octokit/rest": "^19.0.7",
     "@octokit/webhooks-methods": "^3.0.2",
     "fastify": "^4.0.0",
