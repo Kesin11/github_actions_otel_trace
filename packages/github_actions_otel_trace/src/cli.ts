@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { parseArgs } from 'node:util';
 import { GithubClient } from './github';
 import { GithubActionsTracer } from './tracer';

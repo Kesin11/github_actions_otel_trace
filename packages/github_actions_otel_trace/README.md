@@ -1,5 +1,5 @@
-# @Kesin11/github_actions_otel_trace
-Send GitHub Actions workflow data to OpenTelemetry.
+# @kesin11/github_actions_otel_trace
+Export GitHub Actions workflow data to OpenTelemetry.
 
 # USAGE
 
@@ -34,4 +34,10 @@ ts-node src/cli.ts \
   --token $GITHUB_TOKEN \
   --otlpEndpoint http://localhost:4318/v1/trace \
   --debug
+```
+
+or use npx
+
+```bash
+npx @kesin11/github_actions_otel_trace
 ```

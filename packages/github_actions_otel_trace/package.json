@@ -1,5 +1,5 @@
 {
-  "name": "@Kesin11/github_actions_otel_trace",
+  "name": "@kesin11/github_actions_otel_trace",
   "version": "0.1.0",
   "description": "",
   "repository": {
@@ -24,8 +24,13 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist/",
-    "LICENSE"
+    "LICENSE",
+    "README.md"
   ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com/"
+  },
   "bin": {
     "gha_otel_trace": "dist/cli.js"
   },
@@ -33,7 +38,8 @@
     "clean": "tsc -b --clean",
     "build": "tsc -b",
     "build:clean": "npm run clean && npm run build",
-    "test": "npm run test"
+    "test": "npm run test",
+    "prerelease": "npm run build:clean && npm publish prerelease"
   },
   "dependencies": {
     "@octokit/plugin-retry": "4.1.1",

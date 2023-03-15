@@ -6,13 +6,15 @@
   "license": "MIT",
   "main": "dist/app.js",
   "scripts": {
+    "clean": "tsc -b --clean",
     "build": "tsc -b",
+    "build:clean": "npm run clean && npm run build",
     "build:watch": "tsc -b -w",
     "start": "fastify start -l info -p 3000 -a 0.0.0.0 dist/app.js",
     "dev": "npm run build:watch & fastify start -w --ignore-watch=.ts$ -l debug -P dist/app.js"
   },
   "dependencies": {
-    "@Kesin11/github_actions_otel_trace": "*",
+    "@kesin11/github_actions_otel_trace": "*",
     "@octokit/rest": "^19.0.7",
     "@octokit/webhooks-methods": "^3.0.2",
     "fastify": "^4.0.0",

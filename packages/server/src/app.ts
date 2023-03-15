@@ -1,7 +1,7 @@
 import { FastifyPluginAsync, } from 'fastify'
 import { verify } from '@octokit/webhooks-methods'
 import { WorkflowRunEvent } from '@octokit/webhooks-types'
-import { GithubActionsTracer, GithubClient } from '@Kesin11/github_actions_otel_trace'
+import { GithubActionsTracer, GithubClient } from '@kesin11/github_actions_otel_trace'
 
 // Start server using fastify-cli
 const app: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
