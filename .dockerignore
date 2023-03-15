@@ -1,0 +1,10 @@
+.git/
+.github/
+node_modules/
+tsconfig.tsbuildinfo
+**/node_modules/
+**/dist/
+**/tsconfig.tsbuildinfo
+
+Dockerfile
+compose*.yml

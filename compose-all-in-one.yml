@@ -1,0 +1,18 @@
+services:
+  github_actions_otel_trace:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      x-bake:
+        tags:
+          - github_actions_otel_trace
+    volumes:
+      # - ./otel-collector-config.yaml:/app/otel-collector-config.yaml
+      - ~/.config/gcloud/application_default_credentials.json:/etc/otel/key.json:ro
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/etc/otel/key.json
+      - GITHUB_PAT=${GITHUB_PAT}
+      - COLLECTOR_CONFIG_YAML=${COLLECTOR_CONFIG_YAML}
+    ports:
+      - "3000:3000" # ./packages/server
+    init: true

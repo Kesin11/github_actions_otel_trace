@@ -1,22 +1,17 @@
-# Getting Started with [Fastify-CLI](https://www.npmjs.com/package/fastify-cli)
-This project was bootstrapped with Fastify-CLI.
+# github_actions_otel_trace webhook sample server
+This server receives GitHub `workflow_run` webhook and exports job tracing data to OpenTelemetry Collector.
 
-## Available Scripts
+## Available scripts
 
 In the project directory, you can run:
 
-### `npm run dev`
+### `npm run start`
 
-To start the app in dev mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To start the server in dev mode. It listen 0.0.0.0:3000 to receive webhook.
 
-### `npm start`
+### `npm dev`
 
-For production mode
-
-### `npm run test`
-
-Run the test cases.
+Start server and watch `*.ts` then reload automatically.
 
 ## Learn More
 
