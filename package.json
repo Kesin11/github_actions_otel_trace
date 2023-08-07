@@ -17,7 +17,8 @@
     "clean": "npm run clean -ws --if-present",
     "build": "npm run build -ws --if-presene",
     "build:clean": "npm run build:clean -ws --if-present",
-    "test": "npm run test -ws --if-present"
+    "test": "npm run test -ws --if-present",
+    "test:integrate": "npm run test:integrate -ws --if-present"
   },
   "devDependencies": {
     "@monorepo-utils/workspaces-to-typescript-project-references": "^2.9.0"

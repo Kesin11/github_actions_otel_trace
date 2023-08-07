@@ -49,8 +49,8 @@ export class GithubActionsTracer {
     this.tracer = provider.getTracer(serviceName)
   }
 
-  shutdown() {
-    this.exporter?.shutdown()
+  async shutdown() {
+    return this.exporter?.shutdown()
   }
 
   startWorkflowSpan(workflowRun: WorkflowRun) {

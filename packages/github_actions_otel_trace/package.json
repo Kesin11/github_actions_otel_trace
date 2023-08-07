@@ -38,7 +38,7 @@
     "clean": "tsc -b --clean",
     "build": "tsc -b",
     "build:clean": "npm run clean && npm run build",
-    "test": "node --test --loader ts-node/esm test/**/*.test.ts",
+    "test:integrate": "node --test --loader ts-node/esm test/integrate/*.test.ts",
     "prerelease": "npm run build:clean && npm publish prerelease"
   },
   "dependencies": {
