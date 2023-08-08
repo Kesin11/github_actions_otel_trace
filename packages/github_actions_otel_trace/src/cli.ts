@@ -34,6 +34,6 @@ const main = async () => {
   githubActionsTracer.startWorkflowSpan(workflowRun)
   githubActionsTracer.addJobSpans(jobs)
   githubActionsTracer.endWorkflowSpan(workflowRun)
-  githubActionsTracer.shutdown()
+  await githubActionsTracer.shutdown()
 }
 main()
