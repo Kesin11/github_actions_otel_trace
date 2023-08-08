@@ -1,27 +1,25 @@
-import fs from 'node:fs';
-import path from "node:path";
 import { setTimeout } from 'node:timers/promises';
 import { beforeEach, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { GithubActionsTracer } from '../../src/tracer';
 import { WorkflowJobs, WorkflowRun } from '../../src/github';
+import { execSync } from 'node:child_process';
 
-const testTraceJson = path.join(__dirname, 'test_trace.json')
-let beforeJsonSize: number
+let beforeLogSize: number
 
 // NOTE: Need to run otel-collector before run this test
-// otel-collector --config ./test/integrate/test_config.yaml 2> ./test/integrate/test_trace.json
+// docker compose -f test/integrate/compose.yml up -d --wait
 describe('Integrate test', () => {
   beforeEach(async () => {
-    const stat = await fs.promises.stat(testTraceJson)
-    beforeJsonSize = stat.size
+    const logs = execSync("docker compose logs", { cwd: __dirname, encoding: "utf-8" })
+    beforeLogSize = logs.length
   });
 
   it('Output trace to OTEL collector', async () => {
     const githubActionsTracer = new GithubActionsTracer({
       serviceName: 'github_actions',
       otlpEndpoint: "http://localhost:4318/v1/traces",
-      // debug: true
+      debug: true
     })
 
     const workflowRun = {
@@ -64,13 +62,12 @@ describe('Integrate test', () => {
       await githubActionsTracer.shutdown()
     })
 
-    // Wait for flushing file
-    await setTimeout(500)
+    // Wait for stability
+    await setTimeout(1000)
 
-    assert.ok(fs.existsSync(testTraceJson), './test_trace.json is exists')
-    const stat = await fs.promises.stat(testTraceJson)
-    const afterJsonSize = stat.size
+    const logs = execSync("docker compose logs", { cwd: __dirname, encoding: "utf-8" })
+    const afterLogSize = logs.length
 
-    assert.ok(afterJsonSize > beforeJsonSize, `Collector receive trace and append to log. log size: after:${afterJsonSize} > before:${beforeJsonSize}`)
+    assert.ok(afterLogSize > beforeLogSize, `Assert OTEL collector received trace and appended to log. log size: after:${afterLogSize} > before:${beforeLogSize}`)
   });
 }); 

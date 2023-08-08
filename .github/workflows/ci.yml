@@ -33,6 +33,11 @@ jobs:
           cache: 'npm'
       - run: npm ci
 
+      - name: Show docker and compose version
+        run: |
+          docker version
+          docker compose version
+
       - name: Unit test
         run: npm run test
       - name: Integrate test
