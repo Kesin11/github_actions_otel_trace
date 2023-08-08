@@ -38,7 +38,9 @@
     "clean": "tsc -b --clean",
     "build": "tsc -b",
     "build:clean": "npm run clean && npm run build",
+    "pretest:integrate": "docker compose -f test/integrate/compose.yml pull && docker compose -f test/integrate/compose.yml up 2> test/integrate/test_trace.json &",
     "test:integrate": "node --test --loader ts-node/esm test/integrate/*.test.ts",
+    "posttest:integrate": "docker compose -f test/integrate/compose.yml down",
     "prerelease": "npm run build:clean && npm publish prerelease"
   },
   "dependencies": {
