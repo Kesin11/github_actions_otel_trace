@@ -3,18 +3,7 @@
   "extends": [
     "github>Kesin11/renovate-config:oss",
     ":prConcurrentLimit10",
-    ":enableVulnerabilityAlerts",
     "schedule:weekends"
-  ],
-  "regexManagers": [
-    {
-      "fileMatch": ["^(Docker|Earth)file.*$"],
-      "matchStrings": [
-        "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s(ENV|ARG) .*?_VERSION=(?<currentValue>.*)\\s"
-      ],
-      "extractVersionTemplate": "^v?(?<version>.*)$",
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
-    }
   ],
   "packageRules": [
     {
