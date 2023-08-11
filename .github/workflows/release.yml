@@ -4,6 +4,9 @@ on:
     branches:
       - main
   workflow_dispatch:
+permissions:
+  contents: write
+  # packages: write
 jobs:
   draft_release:
     runs-on: ubuntu-latest
