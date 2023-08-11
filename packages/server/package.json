@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@kesin11/github_actions_otel_trace": "*",
-    "@octokit/rest": "^19.0.13",
     "@octokit/webhooks-methods": "^3.0.3",
     "fastify": "^4.21.0",
     "fastify-cli": "^5.8.0"
