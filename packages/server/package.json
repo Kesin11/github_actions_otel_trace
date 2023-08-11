@@ -18,7 +18,7 @@
     "@octokit/rest": "^19.0.7",
     "@octokit/webhooks-methods": "^3.0.2",
     "fastify": "^4.0.0",
-    "fastify-cli": "^5.7.1"
+    "fastify-cli": "^5.8.0"
   },
   "devDependencies": {
     "@octokit/webhooks-types": "^6.10.0",
