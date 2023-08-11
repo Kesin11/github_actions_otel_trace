@@ -36,3 +36,12 @@ We provide [compose.yml](./compose.yml) which includes OpenTelemetry collector a
 ```bash
 docker compose up -d
 ```
+
+# Required scope for GitHub Token
+Fine-grained token:
+
+- Actions: Read-only
+
+Classic Token:
+
+- repo
