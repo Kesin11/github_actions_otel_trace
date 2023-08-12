@@ -6,7 +6,7 @@
   "author": "kesin1202000@gmail.com",
   "license": "MIT",
   "engines": {
-    "node": ">=v18.17.0"
+    "node": ">=v18.17.1"
   },
   "workspaces": [
     "packages/*"
