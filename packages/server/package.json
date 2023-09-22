@@ -20,7 +20,7 @@
     "fastify-cli": "^5.8.0"
   },
   "devDependencies": {
-    "@octokit/webhooks-types": "^7.3.0",
+    "@octokit/webhooks-types": "^7.3.1",
     "@types/node": "^18.17.12",
     "typescript": "^5.2.2"
   }
