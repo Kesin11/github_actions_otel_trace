@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/Kesin11/github_actions_otel_trace",
   "engines": {
-    "node": ">=18.18.0"
+    "node": ">=18.18.1"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
