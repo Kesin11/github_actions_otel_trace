@@ -3,6 +3,9 @@ Export GitHub Actions workflow data to OpenTelemetry.
 
 - [npm(GitHub Packages)](https://github.com/Kesin11/github_actions_otel_trace/pkgs/npm/github_actions_otel_trace)
 
+# Architecture
+![Architecture](https://user-images.githubusercontent.com/1324862/275295553-bdf6e12b-d0a1-4c19-9de5-bdc9e706b8ba.png)
+
 # all-in-one image for Google Cloud Trace (production sample)
 all-in-one image includes OpenTelemetry(OTEL) collector binary and our nodejs server that receives GitHub webhook and exports trace data to OTEL collector in a one container image.
 
