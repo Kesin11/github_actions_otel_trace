@@ -17,9 +17,6 @@
     "url": "https://github.com/Kesin11/github_actions_otel_trace/issues"
   },
   "homepage": "https://github.com/Kesin11/github_actions_otel_trace",
-  "engines": {
-    "node": ">=20.8.1"
-  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
