@@ -11,6 +11,13 @@
       "extends": [
         "schedule:monthly"
       ]
+    },
+    {
+      "groupName": "opentelemetry-collector-contrib",
+      "matchPackageNames": [
+        "open-telemetry/opentelemetry-collector-releases",
+        "otel/opentelemetry-collector-contrib"
+      ]
     }
   ]
 }
