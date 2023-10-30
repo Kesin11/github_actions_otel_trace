@@ -22,8 +22,6 @@ exporters:
       insecure: true
   # googlecloud:
   #   project: YOUR_PROJECT_ID
-  #   retry_on_failure:
-  #     enabled: false
   #   trace:
 
 service:
