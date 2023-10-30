@@ -17,8 +17,6 @@ exporters:
     # `project`: default = Fetch from Credentials
     # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/googlecloudexporter
     # project: YOUR_PROJECT_ID
-    retry_on_failure:
-      enabled: false
     trace:
 
 service:
