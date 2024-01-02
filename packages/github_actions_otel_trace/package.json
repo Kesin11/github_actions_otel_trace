@@ -35,10 +35,8 @@
     "clean": "tsc -b --clean",
     "build": "tsc -b",
     "build:clean": "npm run clean && npm run build",
-    "test": "node --test --loader ts-node/esm test/integrate/testcontainer.test.ts",
-    "pretest:integrate": "docker compose -f test/integrate/compose.yml up -d --wait",
+    "test": "node --test --loader ts-node/esm test/integrate/otel_collector.test.ts",
     "test:integrate": "node --test --loader ts-node/esm test/integrate/*.test.ts",
-    "posttest:integrate": "docker compose -f test/integrate/compose.yml down",
     "prerelease": "npm run build:clean && npm publish prerelease"
   },
   "dependencies": {
