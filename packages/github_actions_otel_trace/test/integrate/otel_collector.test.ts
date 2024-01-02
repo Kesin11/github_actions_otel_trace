@@ -1,27 +1,39 @@
 import { setTimeout } from 'node:timers/promises';
-import { beforeEach, describe, it } from 'node:test';
+import path from 'node:path'
+import { after, before, beforeEach, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { GenericContainer, StartedTestContainer, Wait } from "testcontainers";
 import { GithubActionsTracer } from '../../src/tracer';
 import { WorkflowJobs, WorkflowRun } from '../../src/github';
-import { execSync } from 'node:child_process';
 
-let beforeLogSize: number
+// renovate: datasource=docker depName=otel/opentelemetry-collector-contrib
+const otelCollectorImage = "otel/opentelemetry-collector-contrib:0.87.0"
 
-// NOTE: Need to run otel-collector before run this test
-// docker compose -f test/integrate/compose.yml up -d --wait
+const DEBUG = false
+
 describe('Integrate test', () => {
-  beforeEach(async () => {
-    const logs = execSync("docker compose logs", { cwd: __dirname, encoding: "utf-8" })
-    beforeLogSize = logs.length
+  let container: StartedTestContainer;
+  let hostPort: number
+
+  before(async () => {
+    console.debug("Starting container...")
+    container = await new GenericContainer(otelCollectorImage)
+      .withExposedPorts({ host: 4318, container: 4318 })
+      .withName("test-otel-col")
+      .withCommand(["--config=/test-config.yaml"])
+      .withBindMounts([{ source: path.join(__dirname, "test-config.yaml"), target: "/test-config.yaml", mode: "ro" }])
+      .withWaitStrategy(Wait.forLogMessage("Everything is ready. Begin running and processing data."))
+      .start();
+    console.log("Container started")
+
+    hostPort = container.getFirstMappedPort()
   });
 
-  it('Output trace to OTEL collector', async () => {
-    const githubActionsTracer = new GithubActionsTracer({
-      serviceName: 'github_actions',
-      otlpEndpoint: "http://localhost:4318/v1/traces",
-      debug: true
-    })
+  beforeEach(async () => {
+  });
+  after(async () => await container.stop())
 
+  describe("GithubActionsTracer", () => {
     const workflowRun = {
       repository: {
         full_name: 'test/test',
@@ -55,19 +67,52 @@ describe('Integrate test', () => {
       }]
     }] as WorkflowJobs
 
-    assert.doesNotThrow(async () => {
+    it('Tracer can output to OTEL collector', async () => {
+      const githubActionsTracer = new GithubActionsTracer({
+        serviceName: 'github_actions',
+        otlpEndpoint: `http://localhost:${hostPort}/v1/traces`,
+        debug: DEBUG
+      })
+
+      assert.doesNotThrow(async () => {
+        githubActionsTracer.startWorkflowSpan(workflowRun)
+        githubActionsTracer.addJobSpans(jobs)
+        githubActionsTracer.endWorkflowSpan(workflowRun)
+        await githubActionsTracer.shutdown()
+      })
+    });
+
+    it('OTEL collector receive tracer', async () => {
+      // Setup
+      const githubActionsTracer = new GithubActionsTracer({
+        serviceName: 'github_actions',
+        otlpEndpoint: `http://localhost:${hostPort}/v1/traces`,
+        debug: DEBUG
+      })
+
+      const startTimeSec = (new Date().getTime()) / 1000
+      // Wait for each test to be split into independent logs.
+      await setTimeout(1000)
+
+      // Execute
       githubActionsTracer.startWorkflowSpan(workflowRun)
       githubActionsTracer.addJobSpans(jobs)
       githubActionsTracer.endWorkflowSpan(workflowRun)
       await githubActionsTracer.shutdown()
+
+      // Assert
+      const promise = new Promise(async (resolve, reject) => {
+        (await container.logs({ since: startTimeSec }))
+          .on("data", line => {
+            if (DEBUG) console.log(line)
+
+            if (line.match(/InstrumentationScope github_actions/)) {
+              return resolve(true)
+            }
+          })
+          .on("end", () => reject(new Error("Not found 'InstrumentationScope github_actions' in container logs")))
+      })
+      assert.doesNotReject(promise)
     })
-
-    // Wait for stability
-    await setTimeout(1000)
-
-    const logs = execSync("docker compose logs", { cwd: __dirname, encoding: "utf-8" })
-    const afterLogSize = logs.length
-
-    assert.ok(afterLogSize > beforeLogSize, `Assert OTEL collector received trace and appended to log. log size: after:${afterLogSize} > before:${beforeLogSize}`)
-  });
+  })
 }); 
