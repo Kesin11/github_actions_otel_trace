@@ -1,4 +1,4 @@
-FROM node:20 as node-builder
+FROM node:20.12.2 as node-builder
 WORKDIR /builder
 
 COPY --link package.json package-lock.json ./
@@ -7,7 +7,7 @@ RUN npm ci && rm -rf ~/.npm
 COPY --link . ./
 RUN npm run build
 
-FROM node:20 as otel-builder
+FROM node:20.12.2 as otel-builder
 WORKDIR /builder
 # renovate: datasource=github-releases depName=open-telemetry/opentelemetry-collector-releases
 ARG OTELCOL_CONTRIB_VERSION=0.98.0
@@ -15,7 +15,7 @@ ARG OTELCOL_CONTRIB_VERSION=0.98.0
 RUN curl -LO https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v${OTELCOL_CONTRIB_VERSION}/otelcol-contrib_${OTELCOL_CONTRIB_VERSION}_linux_amd64.tar.gz
 RUN tar -xvf otelcol-contrib_${OTELCOL_CONTRIB_VERSION}_linux_amd64.tar.gz
 
-FROM node:20-slim as prod
+FROM node:20.12.2-slim as prod
 WORKDIR /app
 
 RUN apt-get update \
