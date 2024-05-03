@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
-    "testcontainers": "^10.8.2",
+    "testcontainers": "^10.9.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   }
