@@ -1,6 +1,6 @@
 import { BasicTracerProvider, ConsoleSpanExporter, SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base'
 import { Resource } from '@opentelemetry/resources'
-import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions'
+import { SEMRESATTRS_SERVICE_NAME } from '@opentelemetry/semantic-conventions'
 import { diag, DiagConsoleLogger, DiagLogLevel, trace, context, SpanStatusCode, Tracer, Span } from '@opentelemetry/api';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
 import { OTLPExporterNodeConfigBase } from '@opentelemetry/otlp-exporter-base';
@@ -28,7 +28,7 @@ export class GithubActionsTracer {
   setupTracer(serviceName: string, options?: { otlpEndpoint?: string, otlpExporterNodeConfig?: OTLPExporterNodeConfigBase }) {
     const provider = new BasicTracerProvider({
       resource: new Resource({
-        [SemanticResourceAttributes.SERVICE_NAME]: serviceName,
+        [SEMRESATTRS_SERVICE_NAME]: serviceName,
       }),
     });
 
