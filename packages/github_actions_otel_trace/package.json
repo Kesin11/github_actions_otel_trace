@@ -41,7 +41,7 @@
   "dependencies": {
     "@octokit/plugin-retry": "6.0.1",
     "@octokit/rest": "^20.1.1",
-    "@opentelemetry/api": "1.8.0",
+    "@opentelemetry/api": "1.9.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.52.1",
     "@opentelemetry/resources": "^1.25.1",
     "@opentelemetry/sdk-node": "^0.52.1",
