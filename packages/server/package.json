@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@octokit/webhooks-types": "^7.5.1",
-    "@types/node": "^20.14.9",
+    "@types/node": "^20.14.13",
     "typescript": "^5.5.4"
   }
 }
