@@ -17,7 +17,7 @@
     "@kesin11/github_actions_otel_trace": "*",
     "@octokit/webhooks-methods": "^4.1.0",
     "fastify": "^5.0.0",
-    "fastify-cli": "^7.0.0"
+    "fastify-cli": "^7.0.1"
   },
   "devDependencies": {
     "@octokit/webhooks-types": "^7.5.1",
